@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use App\Requisicionhasordencompras;
+
+
+
+class FixedComment extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'fixed:comment';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Comando y Archivo para solucionar problemas de insercion en base datos !Ejecutar con Precaución!';
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {
+        // $partidas_entradas = DB::select('select * from partidas_entradas');
+        // foreach ($partidas_entradas as $key => $value) {
+        //   if ($value->almacene_id == '') {
+        //     $par_ent = \App\PartidaEntrada::where('id',$value->id)->first();
+        //     $par_ent->status = 0;
+        //     $par_ent->save();
+        //   }else {
+        //     $par_ent = \App\PartidaEntrada::where('id',$value->id)->first();
+        //     $par_ent->status = 1;
+        //     $par_ent->save();
+        //   }
+        // }
+
+        $rhoc = DB::select('select * from requisicion_has_ordencompras');
+        foreach ($rhoc as $key => $value) {
+          $rh = \App\requisicionhasordencompras::where('id',$value->id)->first();
+          $rh->cantidad_entrada = $value->cantidad;
+          $rh->save();
+        }
+    }
+}
+
